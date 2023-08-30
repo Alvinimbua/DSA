@@ -21,7 +21,7 @@ public class SinglyLinkedList {
 		}
 	}
 	
-	public void display(ListNode head) {
+	public void display( ) {
 		ListNode current = head;
 		while (current != null) {
 			System.out.print(current.data + " --> ");
@@ -277,8 +277,115 @@ public class SinglyLinkedList {
 		}
 	}
 	
+	//method to insert into a sorted linked list
+	public ListNode insertInSortedList(int value) {
+		ListNode newNode = new ListNode(value);
+		if(head == null || head.next == null ) {
+			return head;
+		}
+		
+		ListNode current = head;
+		ListNode temp = null;
+		
+		while(current != null && current.data < newNode.data) {
+			temp = current;
+			current = current .next;
+		}
+		
+		newNode.next = current;
+		temp.next = newNode;
+		return head;
+	}
 	
+	//method to remove a key from a sorted linked list
+	public void removeKeyFromSortedList(int key) {
+		ListNode current = head;
+		ListNode temp = null;
+		
+		while(current != null && current.data == key) {
+			head = current.next;
+			return;
+		}
+		
+		while(current != null && current.data != key) {
+			temp = current;
+			current = current.next;
+		}
+		
+	//key is not found
+			if(current == null)
+				 return;
+			temp.next = current.next;
+			 
+		}
 	
+	//method to detect a loop in a singly linked list
+	public boolean containsLoop() {
+		ListNode fastPtr = head;
+		ListNode slowPtr = head;
+		
+		while(fastPtr != null && fastPtr.next != null) {
+			fastPtr = fastPtr.next.next;
+			slowPtr = slowPtr.next;
+		
+		if (fastPtr == slowPtr) {
+			return true;
+		}
+		}
+		return false;
+	}
+	
+	//method to find a start of a loop in a singly linked list
+		public ListNode  startNodeInALoop() {
+			ListNode fastPtr = head;
+			ListNode slowPtr = head;
+			
+			while(fastPtr != null && fastPtr.next != null) {
+				fastPtr = fastPtr.next.next;
+				slowPtr = slowPtr.next;
+			
+			if (fastPtr == slowPtr) {
+				return getStartingNode(slowPtr);
+			}
+			}
+			return null;
+		}
+	 
+	public ListNode getStartingNode(ListNode slowPtr) {
+		ListNode temp = head;
+		while (slowPtr != temp) {
+			temp = temp.next;
+			slowPtr = slowPtr.next;
+		}
+		return temp;
+	}
+	
+	//method to remove a loop in a singly linked list
+			public void removeLoopInANode() {
+				ListNode fastPtr = head;
+				ListNode slowPtr = head;
+				
+				while(fastPtr != null && fastPtr.next != null) {
+			 		fastPtr = fastPtr.next.next;
+					slowPtr = slowPtr.next;
+				
+				if (fastPtr == slowPtr) {
+					removeLoop(slowPtr);
+					return;
+			}
+		}				 
+   }
+
+	private void removeLoop(ListNode slowPtr) {
+		ListNode temp = head;
+		while(temp.next != slowPtr.next) {
+			temp = temp.next;
+			slowPtr = slowPtr.next;
+		} 
+		slowPtr.next = null;
+	}
+
+	//create a method that will create a loop in a linked list
 	public void createALoopInLinkedList() {
 		ListNode first = new ListNode(1);
 		ListNode second = new ListNode(2);
@@ -296,7 +403,52 @@ public class SinglyLinkedList {
 		sixth.next = third;
 	}
 	
+	public static ListNode merge(ListNode a, ListNode b) {
+		ListNode dummy = new ListNode(0);
+		ListNode tail = dummy;
+		
+		while(a != null && b != null) {
+			if(a.data <= b.data) {
+				tail.next = a;
+				a = a.next;
+			} else {
+				tail.next = b;
+				b = b.next;
+			}
+			tail = tail.next;
+		}
+		
+		if(a == null) {
+			tail.next = b;
+		} else {
+			tail.next = a;
+		}
+		
+		return dummy.next;
+	}
+	
 	public static void main(String[] args) {
+		
+		SinglyLinkedList sll1 = new SinglyLinkedList();
+		sll1.insertLast(1);
+		sll1.insertLast(4);
+		sll1.insertLast(7);
+		
+		SinglyLinkedList sll2 = new SinglyLinkedList();
+		sll2.insertLast(3);
+		sll2.insertLast(5);
+		sll2.insertLast(8);
+		sll2.insertLast(9);
+		sll2.insertLast(14);
+		sll2.insertLast(18);
+		
+		sll1.display();
+		sll2.display();
+		
+		SinglyLinkedList result = new SinglyLinkedList();
+		result.head = merge(sll1.head, sll2.head);
+		
+		result.display();
 		 
 		//initialize the singly linked list
 		
@@ -315,25 +467,37 @@ public class SinglyLinkedList {
 //		ListNode second = new ListNode(1);
 //		ListNode third = new ListNode(8);
 //		ListNode fourth = new ListNode(11);
-		
+  		
 		//Connect them together to form a chain (Singly Linked lIst)
 //		head.next = second; //10 --> 1
 //		second.next = third; // 10--> 1 --> 8
 //		third.next = fourth; //10--> 1 --> 8 --> 11 --> null	
+		 
+//		SinglyLinkedList sll = new SinglyLinkedList();
+//		sll.createALoopInLinkedList();
+//		System.out.println(sll.containsLoop());
+//		System.out.println(sll.startNodeInALoop().data);  
+//		sll.removeLoopInANode();
+//		sll.display(); 
 		
-		SinglyLinkedList sll = new SinglyLinkedList();
-		 sll.insertFirst(3);
-		 sll.insertFirst(3);
-		 sll.insertFirst(2);
-		 sll.insertFirst(1);
-		 sll.insertFirst(1);
+//		 sll.insertFirst(16);
+//		 sll.insertFirst(11);
+//		 sll.insertFirst(10);
+//		 sll.insertFirst(8);
+//		 sll.insertFirst(1);
+ 		 
+		// sll.insertInSortedList(2);
+//		 sll.printLinkedList();
 		 
-		 sll.printLinkedList();
+		 //sll.removeKeyFromSortedList(2);
+//		 sll.insertInSortedList(2);
+//		 
+//		 sll.printLinkedList();
 		 
-		 sll.removeDuplicates();
 		 
-		 sll.printLinkedList();
-		
+		// sll.removeDuplicates();
+		 
+				
 //		ListNode middleNode = sll.getMiddle();
 //		System.out.println("MIddle node is => " + middleNode.data);
 		
